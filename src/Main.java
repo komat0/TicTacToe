@@ -50,15 +50,45 @@ public class Main {
     }
 
     public static boolean checkWin(char symb) {
-        if (map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
-        if (map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
-        if (map[2][0] == symb && map[2][1] == symb && map[2][2] == symb) return true;
-        if (map[0][0] == symb && map[1][0] == symb && map[2][0] == symb) return true;
-        if (map[0][1] == symb && map[1][1] == symb && map[2][1] == symb) return true;
-        if (map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
-        if (map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
-        if (map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;
-        return false;
+        int horizonLineCheck = 0;
+        int verticalLineCheck = 0;
+        int leftDiagonalCheck = 0;
+        int rightDiagonalCheck = 0;
+
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (map[i][j] == symb) {
+                    horizonLineCheck++;
+                } else if (map[i] == map[j] && map[i][i] == symb) { //Check left diagonal
+                    leftDiagonalCheck++;
+                } else if (map[i][j] == symb && map[i++][j] == symb) {
+                    verticalLineCheck++;
+                } else if (map[i][SIZE - i] == symb || map[i++][SIZE - i] == symb) {
+                    rightDiagonalCheck++;
+                }
+            }
+            if (horizonLineCheck == 3 ||
+                    leftDiagonalCheck == 3 ||
+                    verticalLineCheck == 3 ||
+                    rightDiagonalCheck == 3) {
+                return true;
+            }
+            horizonLineCheck = 0;
+        }
+        leftDiagonalCheck = 0;
+        rightDiagonalCheck =0;
+        verticalLineCheck = 0;
+
+//        if (map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
+//        if (map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
+//        if (map[2][0] == symb && map[2][1] == symb && map[2][2] == symb) return true;
+//        if (map[0][0] == symb && map[1][0] == symb && map[2][0] == symb) return true;
+//        if (map[0][1] == symb && map[1][1] == symb && map[2][1] == symb) return true;
+//        if (map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
+//        if (map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
+//        if (map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;
+         return false;
     }
 
     /**
