@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
 
     public static char[][] map;
-    public static final int SIZE = 3;
+    public static final int SIZE = 5;
     public static final int DOTS_TO_WIN = 3;
     public static final char DOT_EMPTY = '.';
     public static final char DOT_X = 'X';
@@ -50,44 +50,41 @@ public class Main {
     }
 
     public static boolean checkWin(char symb) {
-        int horizonLineCheck = 0;
-        int verticalLineCheck = 0;
         int leftDiagonalCheck = 0;
         int rightDiagonalCheck = 0;
 
 
         for (int i = 0; i < SIZE; i++) {
+            int horizonLineCheck = 0;
+            int verticalLineCheck = 0;
+
             for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == symb) {
+                if (map[i][j] == symb) { //Check horizontal diagonal
                     horizonLineCheck++;
-                } else if (map[i] == map[j] && map[i][i] == symb) { //Check left diagonal
-                    leftDiagonalCheck++;
-                } else if (map[i][j] == symb && map[i++][j] == symb) {
+                }
+                if (map[j][i] == symb) { //Check vertical diagonal
                     verticalLineCheck++;
-                } else if (map[i][SIZE - i] == symb || map[i++][SIZE - i] == symb) {
-                    rightDiagonalCheck++;
+                }
+
+                if (horizonLineCheck == DOTS_TO_WIN) {
+                    return true;
                 }
             }
-            if (horizonLineCheck == 3 ||
-                    leftDiagonalCheck == 3 ||
-                    verticalLineCheck == 3 ||
-                    rightDiagonalCheck == 3) {
+
+            if (map[i][i] == symb) { //Check left diagonal
+                leftDiagonalCheck++;
+            }
+
+            if (map[i][(SIZE - 1) - i] == symb) { //Check right diagonal
+                rightDiagonalCheck++;
+            }
+
+            if (leftDiagonalCheck == DOTS_TO_WIN ||
+                    verticalLineCheck == DOTS_TO_WIN ||
+                    rightDiagonalCheck == DOTS_TO_WIN) {
                 return true;
             }
-            horizonLineCheck = 0;
         }
-        leftDiagonalCheck = 0;
-        rightDiagonalCheck =0;
-        verticalLineCheck = 0;
-
-//        if (map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
-//        if (map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
-//        if (map[2][0] == symb && map[2][1] == symb && map[2][2] == symb) return true;
-//        if (map[0][0] == symb && map[1][0] == symb && map[2][0] == symb) return true;
-//        if (map[0][1] == symb && map[1][1] == symb && map[2][1] == symb) return true;
-//        if (map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
-//        if (map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
-//        if (map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;
          return false;
     }
 
@@ -136,10 +133,15 @@ public class Main {
      */
     public static boolean isCellValid(int x, int y) {
 
-        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return false;
+        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE)  {
+            System.out.println("The coordinates is out of bound");
+            return false;
+        }
+
         if (map[y][x] == DOT_EMPTY) {
             return true;
         }
+        System.out.println("This cell is occupied");
         return false;
     }
 
